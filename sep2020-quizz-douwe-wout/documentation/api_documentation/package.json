@@ -1,0 +1,11 @@
+{
+  "name": "api_doc",
+  "version": "1.0.0",
+  "scripts": {
+    "gen-api-doc": "bootprint openapi api_doc-swagger.yaml view_doc"
+  },
+  "devDependencies": {
+    "bootprint": "^4.0.4",
+    "bootprint-openapi": "^4.0.4"
+  }
+}

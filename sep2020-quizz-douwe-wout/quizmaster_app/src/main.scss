@@ -1,0 +1,210 @@
+@import "~bootstrap/scss/bootstrap";
+
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,500,80);
+
+$theme-colors: (
+  "info": tomato,
+  "danger": teal,
+);
+
+$default-primary-font-stack: "Montserrat", sans-serif;
+$default-secondary-font-stack: "Roboto", sans-serif;
+
+$default-primary-text-color: #151515;
+$default-secondary-text-color: #ffffff;
+$default-third-text-color: #454545;
+
+$header-font-weight: 800;
+$subtitle-font-weight: 200;
+$default-primary-font-weight: 500;
+$default-third-font-weight: lighter;
+
+$background-color: rgb(random(255), random(255), random(255));
+$shadow-color: #888888;
+$box-shadow: 2px 3px 10px 1px $shadow-color;
+$default-divider-color: #ccc;
+
+$scrollbar-color: lightblue;
+$scrollbar-color-hover: lightcoral;
+
+$default-border-radius: 5px;
+
+body {
+  font-family: $default-primary-font-stack;
+  color: $default-primary-text-color;
+  background-color: $background-color;
+  -webkit-transition: background-color 2s ease; /* For Safari 3.1 to 6.0 */
+  transition: background-color 2s ease;
+}
+
+%bodyBox {
+  border-radius: 5px;
+  margin-bottom: 5em;
+  box-shadow: $box-shadow;
+  background-color: #ffffff;
+  -webkit-transition: width 2s ease; /* For Safari 3.1 to 6.0 */
+  transition: width 2s ease;
+}
+
+.bodyBoxLarge {
+  @extend %bodyBox;
+  padding: 1em;
+  padding-top: 3em;
+  width: 75%;
+}
+
+.bodyBoxSmall {
+  @extend %bodyBox;
+  padding: 4em;
+  padding-top: 3em;
+  width: 35%;
+  text-align: center;
+}
+
+h2 {
+  font-weight: $header-font-weight;
+}
+
+.subtitle {
+  font-weight: $subtitle-font-weight;
+  margin-bottom: 1em;
+  font-family: $default-secondary-font-stack;
+}
+
+.subtitleDivider {
+  width: 75%;
+  border: 0;
+  border-top: 2px solid $default-divider-color;
+  margin-bottom: 2em;
+  text-align: center;
+}
+
+button:hover {
+  box-shadow: 1px 2px 4px 1px $shadow-color;
+}
+
+input {
+  outline: 0;
+  border-width: 0 0 2px;
+  border-color: $primary;
+}
+input:focus {
+  border-color: black;
+}
+
+.verticalDivider {
+  border-right: 3px solid black;
+}
+
+.categorieList {
+  height: 20em;
+  overflow-y: scroll;
+  overflow-x: auto;
+  margin-bottom: 3em;
+}
+
+.questionList {
+  height: 25em;
+  overflow-y: scroll;
+  overflow-x: scroll;
+  margin-bottom: 3em;
+
+  option {
+    /* wrap text in compatible browsers */
+    -moz-white-space: pre-wrap;
+    -o-white-space: pre-wrap;
+    white-space: pre-wrap;
+    /* hide text that can't wrap with an ellipsis */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* add border after every option */
+    border-bottom: 1px solid #ddd;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(200, 200, 200, 1);
+  box-shadow: inset 0 0 6px rgba(200, 200, 200, 1);
+  border-radius: $default-border-radius;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: $scrollbar-color;
+  -webkit-box-shadow: inset 0 0 6px rgba(90, 90, 90, 0.7);
+  box-shadow: inset 0 0 6px rgba(90, 90, 90, 0.7);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: $scrollbar-color-hover;
+}
+
+.questionHeaderCategory {
+  background-color: $primary;
+  border-radius: $default-border-radius;
+  font-weight: $header-font-weight;
+  color: $default-secondary-text-color;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  font-size: 1.3em;
+  width: fit-content;
+  display: block;
+  margin: auto;
+}
+
+.questionHeaderQuestion {
+  font-weight: $default-primary-font-weight;
+  margin-bottom: -15px;
+}
+
+.questionHeaderAnswer {
+  font-family: $default-secondary-font-stack;
+  font-style: italic;
+  font-weight: $default-third-font-weight;
+  color: $default-third-text-color;
+  margin-bottom: 3em;
+}
+
+%answer {
+  margin-bottom: 2em;
+  border-bottom: 1px solid $default-divider-color;
+}
+
+.answer {
+  @extend %answer;
+}
+
+.answerCorrect {
+  @extend %answer;
+  border-radius: $default-border-radius;
+  background-color: lightgreen;
+}
+
+.answerWrong {
+  @extend %answer;
+  border-radius: $default-border-radius;
+  background-color: darkred;
+}
+
+%boxInformation {
+  background-color: $primary;
+  border-radius: $default-border-radius;
+  font-weight: $header-font-weight;
+  color: $default-secondary-text-color;
+  padding: 0em 1em 0em 1em;
+  width: fit-content;
+  height: fit-content;
+  display: block;
+  margin: auto;
+  text-align: center;
+}
+
+.quizIdHeader {
+  @extend %boxInformation;
+  padding: 0em 2em 0em 2em;
+  font-size: 2em;
+}

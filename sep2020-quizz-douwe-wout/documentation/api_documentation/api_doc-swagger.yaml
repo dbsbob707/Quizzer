@@ -1,0 +1,393 @@
+---
+swagger: '2.0'
+info:
+  description: Description from the WebServer REST API for the Quizzer assignment
+  version: '0.1'
+  title: Quizzer - WebServer REST API
+tags:
+- name: Questions
+  description: API Requests for the Quizzer Questions
+- name: Quizzers
+  description: API Requests for the Quizzers
+- name: Rounds
+  description: API Requests for the Rounds
+- name: Round Questions
+  description: API Requests for the Round Questions
+- name: Teams
+  description: API Requests for the Teams
+schemes:
+- http
+definitions:
+  Questions:
+    properties:
+      _id:
+        type: string
+        example: 507f1f77bcf86cd799439011
+      question:
+        type: string
+        example: Wie is de schrijver van Nijntje?
+      answer:
+        type: string
+        example: Dick Bruna
+      category:
+        type: string
+        example: Literatuur
+  Quizzer:
+    properties:
+      _id:
+        type: string
+        example: test1234
+      quizmaster:
+        type: string
+        example: Ed de Vries
+      teams:
+        type: array
+        items:
+          "$ref": "#/definitions/Teams"
+      questions:
+        type: array
+        items:
+          "$ref": "#/definitions/Questions"
+  Rounds:
+    properties:
+      _id:
+        type: number
+        example: 1
+      questions:
+        "$ref": "#/definitions/Questions"
+  Teams:
+    properties:
+      _id:
+        type: string
+        example: Frans Bauer Fanclub
+      rp:
+        type: number
+        example: 50
+      qp:
+        type: array
+        example:
+        - 1
+        - 2
+      answers:
+        type: array
+        example:
+        - - Hoedje van Papier
+          - Bertje
+        - - '2012'
+          - Jantje
+paths:
+  "/quizzers/:quizID/questions/categories":
+    get:
+      tags:
+      - Questions
+      summary: Retrieves the available question categories
+      parameters:
+      - in: query
+        name: quizID
+        description: The QuizID
+        type: string
+      responses:
+        '200':
+          description: Array with available categories
+          schema:
+            type: array
+            items: {}
+            example:
+            - Art
+            - Sports
+            - Games
+  "/quizzers/:quizID/questions/:categoryNames":
+    get:
+      tags:
+      - Questions
+      summary: Retrieves the available questions from a defined category
+      parameters:
+      - in: query
+        name: quizID
+        description: The QuizID
+        type: string
+      - in: query
+        name: categoryNames
+        description: The selected questions categories
+        type: array
+        items:
+          type: string
+      responses:
+        '200':
+          description: Returns an array with available questions from the specified
+            categories
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/Rounds"
+  "/quizzers/:quizID":
+    get:
+      tags:
+      - Quizzers
+      summary: Retrieve the information from a specific Quiz
+      parameters:
+      - in: query
+        name: quizID
+        description: The QuizID
+        type: string
+      responses:
+        '200':
+          description: Retrieve information about a specific Quiz
+          schema:
+            "$ref": "#/definitions/Quizzer"
+  "/quizzers":
+    post:
+      tags:
+      - Quizzers
+      summary: Allows a Quizmaster to start a quiz
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: quizInformation
+        schema:
+          type: object
+          required:
+          - quizmasterName
+          properties:
+            quizmasterName:
+              type: string
+      responses:
+        '200':
+          description: Returns a generated quizID
+          schema:
+            type: string
+            example: test1234
+  "/quizzers/:quizID/rounds/:roundNumber":
+    get:
+      tags:
+      - Rounds
+      summary: Retrieve the information from a specific round
+      parameters:
+      - in: query
+        name: quizID
+        description: The QuizID
+        type: string
+      - in: query
+        name: roundNumber
+        description: The current round
+        type: number
+      responses:
+        '200':
+          description: Retrieve information about a specific Round
+          schema:
+            "$ref": "#/definitions/Rounds"
+  "/quizzers/:quizID/rounds":
+    post:
+      tags:
+      - Rounds
+      summary: Start a new round
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: quizID
+        description: The QuizID
+        type: string
+      - in: body
+        name: teamInformation
+        schema:
+          type: object
+          properties:
+            categories:
+              type: array
+              items: {}
+              example:
+              - Art
+              - Sports
+              - Games
+      responses:
+        '200':
+          description: OK
+  "/quizzers/:quizID/rounds/:roundNumber/questions/:questionID":
+    get:
+      tags:
+      - Round Questions
+      summary: Retrieve the questions from the specified round
+      parameters:
+      - in: query
+        name: quizID
+        description: The QuizID
+        type: string
+      - in: query
+        name: roundNumber
+        description: The current round
+        type: number
+      - in: query
+        name: questionID
+        description: The id from the question
+        type: string
+      responses:
+        '200':
+          description: A specific Question with it's information
+          schema:
+            "$ref": "#/definitions/Questions"
+  "/quizzers/:quizID/rounds/:roundNumber/questions":
+    get:
+      tags:
+      - Round Questions
+      summary: Retrieve the questions from the specified round
+      parameters:
+      - in: query
+        name: quizID
+        description: The QuizID
+        type: string
+      - in: query
+        name: roundNumber
+        description: The current round
+        type: number
+      responses:
+        '200':
+          description: Array of questions
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/Questions"
+    post:
+      tags:
+      - Round Questions
+      summary: Add a question to the round
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: quizID
+        description: The QuizID
+        type: string
+      - in: query
+        name: roundNumber
+        description: The current round
+        type: number
+      - in: body
+        name: questionInformation
+        schema:
+          "$ref": "#/definitions/Questions"
+      responses:
+        '200':
+          description: OK
+  "/quizzers/:quizID/teams":
+    get:
+      tags:
+      - Teams
+      summary: Get the Teams from a Quizzer
+      parameters:
+      - in: query
+        name: quizID
+        description: The QuizID
+        type: string
+      responses:
+        '200':
+          description: Returns array of Teams
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/Teams"
+    post:
+      tags:
+      - Teams
+      summary: Apply a Team to a Quizzer
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: quizID
+        description: The QuizID
+        type: string
+      - in: body
+        name: teamInformation
+        schema:
+          type: object
+          required:
+          - teamName
+          properties:
+            teamName:
+              type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request (Quizzer Id is probably not available)
+  "/quizzers/:quizID/teams/:teamID/answers":
+    post:
+      tags:
+      - Teams
+      summary: Add an answer to the answers collection from a team
+      consumes:
+      - application/json
+      parameters:
+      - in: query
+        name: quizID
+        description: The QuizID
+        type: string
+      - in: query
+        name: teamID
+        description: The teamname
+        type: string
+      - in: body
+        name: answerInformation
+        description: Object with the round and given answer
+        schema:
+          properties:
+            roundNumber:
+              type: number
+            answer:
+              type: string
+      responses:
+        '200':
+          description: OK
+  "/quizzers/:quizID/teams/:teamID":
+    get:
+      tags:
+      - Teams
+      summary: Get information about a team
+      parameters:
+      - in: query
+        name: quizID
+        description: The QuizID
+        type: string
+      - in: query
+        name: teamID
+        description: The teamname
+        type: string
+      responses:
+        '200':
+          description: Returns information about a specified Team
+          schema:
+            "$ref": "#/definitions/Teams"
+    put:
+      tags:
+      - Teams
+      summary: Allow a team to take part in the Quizzer (Quizmaster)
+      parameters:
+      - in: query
+        name: quizID
+        description: The QuizID
+        type: string
+      - in: query
+        name: teamID
+        description: The teamname
+        type: string
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+      - Teams
+      summary: Decline a team to take part in the Quizzer (Quizmaster)
+      parameters:
+      - in: query
+        name: quizID
+        description: The QuizID
+        type: string
+      - in: query
+        name: teamID
+        description: The teamname
+        type: string
+      responses:
+        '200':
+          description: OK

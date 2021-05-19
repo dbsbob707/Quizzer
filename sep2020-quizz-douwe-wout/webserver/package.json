@@ -1,0 +1,29 @@
+{
+  "name": "webserver",
+  "version": "1.0.0",
+  "description": "WebServer for the Quizzer assignment",
+  "main": "webserver.js",
+  "scripts": {
+    "debug": "nodemon.cmd ./webserver.js",
+    "debug-linux": "nodemon ./webserver.js",
+    "start": "node ./webserver.js"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "quizzer_questions/quizzers_data/*"
+    ]
+  },
+  "author": "Douwe Brouwer & Wout Hakvoort",
+  "repository": {
+    "type": "git",
+    "url": "git://https://github.com/HANICA-DWA/sep2020-quizz-douwe-wout/tree/main/webserver"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "generate-sms-verification-code": "^1.0.5",
+    "mongoose": "^5.10.9",
+    "ws": "^7.3.1"
+  }
+}
